@@ -1,0 +1,200 @@
+.loading{
+    padding: 10px 0;
+    display: flex;
+    flex-direction: row;
+    overflow: hidden;
+    gap: 15px;
+    &__card{
+         width: 250px;
+        background-color: $bg-second-color;
+        border-radius: 10px;
+        flex-shrink: 0;
+        box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        cursor: pointer;
+        overflow: hidden;
+    }
+    &__imageBox{
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding: 30px 0 15px;
+        gap: 15px;
+    }
+    &__image{
+        width: 90px;
+        height: 90px;
+        border-radius: 50%;
+        background-color: $bg-first-color;
+    }
+    &__info{
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 8px;
+        p{
+            &:first-child{
+                width: 80%;
+                height: 30px;
+                background-color: $bg-first-color;
+            }
+            &:last-child{
+                width: 60%;
+                height: 20px;
+                background-color: $bg-first-color;
+            }
+        }
+    }
+    &__textBox{
+        background-color: $bg-second-color;
+        padding: 10px 0 30px;
+        height: auto;
+    }
+    &__text{
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        align-items: center;
+        p{
+            width: 80%;
+            height: 20px;
+            background-color: $bg-first-color;
+        }
+    }
+    &__btns{
+        margin-top: 20px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 6px;
+        button{
+            width: 60%;
+            height: 30px;
+            border-radius: 6px;
+            background-color: $bg-first-color;  
+        }
+    }
+}
+
+.users__scroll{
+    position: relative;
+    overflow: hidden;
+    padding: 0;
+    .users__scrollBtns{
+        display: none;
+        position: absolute;
+        left: 0;
+        top: 50%;
+        transform: translateY(-50%);
+        flex-direction: row;
+        justify-content: space-between;
+        width: 100%;
+        padding: 0 6px;
+        z-index: 99;
+        button{
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            background-color: #fff;
+            box-shadow: 2px 4px 8px rgba(0,0,0,0.2);
+            transition: background 0.5s ease;
+            &:hover{
+                color: #fff;
+                background: $bg-btn-color;
+                transform: scale(1.1);
+            }
+        }
+    }
+}
+
+.users{
+    padding: 10px 0;
+    display: flex;
+    flex-direction: row;
+    gap: 15px;
+    transform: translateX(0);
+    transition: transform .5s ease;
+    &__card{
+        width: 250px;
+        background-color: #fff;
+        border-radius: 10px;
+        flex-shrink: 0;
+        box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        cursor: pointer;
+        overflow: hidden;
+    }
+    &__imageBox{
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding: 30px 0 15px;
+        gap: 15px;
+    }
+    &__image{
+        width: 90px;
+        height: 90px;
+        border-radius: 50%;
+        overflow: hidden;
+    }
+    &__info{
+        text-align: center;
+        p{
+            &:first-child{
+                font-weight: 600;
+                font-size: 18px;
+                line-height: 28px;
+            }
+            &:last-child{
+                color: $text-second-color;
+                font-size: 12px;
+                font-weight: 500;
+            }
+        }
+    }
+    &__textBox{
+        background-color: $bg-second-color;
+        padding: 10px 0 30px;
+        height: auto;
+    }
+    &__text{
+        text-align: center;
+        p{
+            font-size: 12px;
+            color: $text-second-color;
+            line-height: 26px;
+        }
+    }
+    &__btns{
+        margin-top: 20px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 6px;
+        button{
+            width: 60%;
+            padding: 4px 0;
+            border-radius: 6px;
+            font-size: 12px;
+            text-transform: uppercase;
+            transition: background .4s ease;
+            &:first-child{
+                background-color: transparent;
+                color: $bg-btn-color;
+                border: 1px solid $bg-btn-color;
+                &:hover{
+                    background-color: dodgerblue;
+                    color: #fff;
+                }
+            }
+            &:last-child{
+                background-color: $bg-btn-color;
+                color: #fff;
+                border: 1px solid $bg-btn-color;
+                &:hover{
+                    opacity: .7;
+                }
+            }
+        }
+    }
+}

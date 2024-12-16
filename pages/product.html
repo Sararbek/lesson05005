@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../css/main.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.1/css/all.min.css" integrity="sha512-5Hs3dF2AEPkpNAR7UiOHba+lRSJNeM2ECkwxUIxC1Q/FLycGTbNapWXB4tP889k5T5Ju8fs4b1P5z/iB4nMfSQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <title>lesson05005</title>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="container">
+            <div class="navbar">
+                <ul>
+                    <li><a href="../index.html">Users</a></li>
+                    <li><a href="../pages/product.html">Products</a></li>
+                    <li><a href="../pages/posts.html">Posts</a></li>
+                </ul>
+                <div class="search">
+                        <i class="fa-solid fa-magnifying-glass"></i>
+                        <input type="text" placeholder="Search items">
+                </div>
+                <button class="openSearchBtn"><i class="fa-solid fa-magnifying-glass"></i></button>
+            </div>
+            <div class="loading__category">
+                <button class="to-left"></button>
+                <div class="loading__category__categorylist">
+                    <ul class="loading__category__coll">
+                    </ul>
+                </div>
+                <button class="to-left"></button>
+            </div>
+            <div class="category">
+                <button class="previusBtn"><i class="fa-solid fa-angle-left"></i></button>
+                <div class="categorylist">
+                    <ul class="collection">
+                    </ul>
+                </div>
+                <button class="nextBtn"><i class="fa-solid fa-angle-right"></i></button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main -->
+
+    <main>
+        <div class="container">
+            <div class="products">
+            </div>
+            <div class="loading__products">
+            </div>
+            <button class="seeMoreBtn">See more</button>
+        </div>
+    </main>
+
+    <!-- Footer -->
+
+    <footer>
+        <div class="container">
+            <hr>
+            <p><i class="fa-regular fa-copyright"></i> Made by Sarvarbek Erkinov</p>
+        </div>
+    </footer>
+
+    <script src="../js/product.js"></script>
+</body>
+</html>
