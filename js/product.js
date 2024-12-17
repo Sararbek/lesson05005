@@ -8,7 +8,9 @@ const seeMoreBtn = document.querySelector('.seeMoreBtn')
 const BASE_URL = 'https://dummyjson.com'
 
 const perPageCount = 4;
-let total = 0
+let productEndPoint = '/products'
+let offset = 0
+
 
 async function fetchCategory(endPoint) {
     try{
@@ -31,16 +33,27 @@ window.addEventListener('load', ()=> {
     createLoadingForProducts(perPageCount)
     fetchCategory('/products/category-list')
     scrollCategories()
-    fetchProducts(`/products?limit=${perPageCount}`)
+    fetchProducts(`${productEndPoint}?limit=${perPageCount}`)
 })
 
 function createCategory(categories){
-    categories.forEach(category => {
+    ["all", ...categories].forEach(category => {
         const listEl = document.createElement('li')
-        listEl.className = "item"
+        listEl.className = category === "all" ? "item active" : "item"
         listEl.textContent = category
-
+        listEl.dataset.category =  category === "all" ? "/products" : `/products/category/${category}`  
         collectionEl.appendChild(listEl)
+        listEl.addEventListener('click', (e)=> {
+            let endpoint = e.target.dataset.category
+            productEndPoint = endpoint
+            productsWrapperEl.innerHTML= null
+            offset = 0
+            fetchProducts(`${productEndPoint}?limit=${perPageCount}`)
+            document.querySelectorAll('.collection .item').forEach(i=> {
+                i.classList.remove('active')
+            })
+            e.target.classList.add('active')
+        })
     })
 }
 
@@ -60,7 +73,7 @@ function scrollCategories(){
             leftBtn.style.display = 'block'
         }
 
-        if(clientWidth + scrollLeft >= scrollWidth){
+        if(clientWidth + scrollLeft >= scrollWidth - 1){
             rightBtn.style.display = 'none'
         }else{
             rightBtn.style.display = 'block'
@@ -88,7 +101,6 @@ function createLoadingForCategories(){
     loadeingCategory.style.display = 'flex'
     Array(12).fill().forEach(()=> {
         const listEl = document.createElement('li')
-        const btnCategory = document.createElement('button')
         listEl.className = "itemLoad to-left"
         listEl.textContent = 'Welcome to this web'
         loadingCategoryListEl.appendChild(listEl)
@@ -102,7 +114,11 @@ async function fetchProducts(endPoint) {
             throw new Error(`Error: ${response.status}`)
         }
         const data = await response.json()
-        total = data.total
+        if(data.total <= perPageCount + (offset * perPageCount)){
+            seeMoreBtn.style.display = 'none'
+        }else{
+            seeMoreBtn.style.display = 'block'
+        }
         createProductCards(data)
     }catch(e){
         console.log(e.message)
@@ -120,7 +136,7 @@ function createProductCards(productCards){
         productCard.innerHTML = `
             <div class="products__card__body">
                         <div class="products__card__image">
-                            <img src=${card.thumbnail}>
+                            <img data-id=${card.id} src=${card.thumbnail}>
                         </div>
                         <div class="products__card__info">
                             <h3>${card.title}</h3>
@@ -162,14 +178,16 @@ function createLoadingForProducts(n){
     })
 }
 
-let offset = 0
 seeMoreBtn.addEventListener('click', ()=>{
     seeMoreBtn.setAttribute('disabled', true)
     seeMoreBtn.textContent = 'Loading...'
     createLoadingForProducts(perPageCount)
     offset++
-    if(total <= perPageCount + (offset * perPageCount)){
-        seeMoreBtn.style.display = 'none'
+    fetchProducts(`${productEndPoint}?limit=${perPageCount}&skip=${offset * perPageCount}`)
+})
+
+productsWrapperEl.addEventListener('click', (e)=> {
+    if(e.target.tagName === "IMG"){
+       open(`/pages/singleProduct.html?id=${e.target.dataset.id}`, "_self")
     }
-    fetchProducts(`/products?limit=${perPageCount}&skip=${offset * perPageCount}`)
 })

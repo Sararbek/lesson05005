@@ -1,12 +1,13 @@
 .loading__products{
     display: grid;
     grid-template-columns: repeat(4, 1fr);
-    gap: 24px 12px;
+    gap: 0 12px;
     &__product{
         background-color: #fff;
         box-shadow: 2px 4px 8px rgba(0,0,0,0.1);
         height: 460px;
         position: relative;
+        margin: 12px 0;
     }
     &__body{
         padding: 30px 40px 20px;
@@ -46,12 +47,13 @@
 .products{
     display: grid;
     grid-template-columns: repeat(4, 1fr);
-    gap: 24px 12px;
+    gap: 0 12px;
     &__card{
         background-color: #fff;
         box-shadow: 2px 4px 8px rgba(0,0,0,0.1);
         height: 460px;
         position: relative;
+        margin: 12px 0;
         &__body{
             padding: 30px 40px 20px;
             display: flex;
