@@ -5,12 +5,43 @@ const loadeingCategory = document.querySelector('.loading__category')
 const categoryEl = document.querySelector('.category')
 const loadingCategoryListEl = document.querySelector('.loading__category__coll')
 const seeMoreBtn = document.querySelector('.seeMoreBtn')
+const searchInputEl = document.querySelector('.search input')
+const searchDropBoxEl = document.querySelector(".search__drop")
 const BASE_URL = 'https://dummyjson.com'
 
 const perPageCount = 4;
 let productEndPoint = '/products'
 let offset = 0
 
+let mainData = []
+let wishList = JSON.parse(localStorage.getItem("wishList")) || []
+
+document.querySelector(".countWishItems").textContent = wishList.length
+
+searchInputEl.addEventListener("keyup", async (e)=>{
+    const value = e.target.value.trim()
+    if(value){
+        searchDropBoxEl.style.display = "block"
+        const response = await fetch(`${BASE_URL}/products/search?q=${value}&limit=${perPageCount}`)
+        response.json()
+        .then(data => {
+            searchDropBoxEl.innerHTML= null
+            data.products.forEach(item => {
+            const searchItemEl = document.createElement('div')
+            searchItemEl.className = "search__item"
+            searchItemEl.dataset.id = item.id
+            searchItemEl.innerHTML =  `
+             <img src=${item.thumbnail}>
+             <p>${item.title}</p>
+            `
+            searchDropBoxEl.appendChild(searchItemEl)
+            })
+        })
+        .catch(err => console.log(err))
+    }else{
+        searchDropBoxEl.style.display = "none"
+    }
+})
 
 async function fetchCategory(endPoint) {
     try{
@@ -48,6 +79,7 @@ function createCategory(categories){
             productEndPoint = endpoint
             productsWrapperEl.innerHTML= null
             offset = 0
+            createLoadingForProducts(perPageCount)
             fetchProducts(`${productEndPoint}?limit=${perPageCount}`)
             document.querySelectorAll('.collection .item').forEach(i=> {
                 i.classList.remove('active')
@@ -119,6 +151,7 @@ async function fetchProducts(endPoint) {
         }else{
             seeMoreBtn.style.display = 'block'
         }
+        mainData = [...mainData, ...data.products]
         createProductCards(data)
     }catch(e){
         console.log(e.message)
@@ -130,13 +163,20 @@ async function fetchProducts(endPoint) {
 }
 
 function createProductCards(productCards){
+    
+    const fragment = document.createDocumentFragment()
     productCards.products.forEach(card => {
         const productCard = document.createElement('div')
         productCard.className = "products__card"
+        const isInWishList = wishList.some(item => item.id === card.id)
+        productCard.dataset.id = card.id
         productCard.innerHTML = `
             <div class="products__card__body">
                         <div class="products__card__image">
-                            <img data-id=${card.id} src=${card.thumbnail}>
+                            <img src=${card.thumbnail}>
+                            <button name="like-btn">
+                                <span class="material-symbols-outlined favouriteIcon ${isInWishList ? "filled" : ""}">favorite</span>
+                            </button>
                         </div>
                         <div class="products__card__info">
                             <h3>${card.title}</h3>
@@ -152,9 +192,10 @@ function createProductCards(productCards){
                     </div>
                     <button class="addCart">Add to cart</button>  
         `
-        productsWrapperEl.appendChild(productCard)
+        fragment.appendChild(productCard)
 
     })
+    productsWrapperEl.appendChild(fragment)
 }
 
 function createLoadingForProducts(n){
@@ -187,7 +228,42 @@ seeMoreBtn.addEventListener('click', ()=>{
 })
 
 productsWrapperEl.addEventListener('click', (e)=> {
-    if(e.target.tagName === "IMG"){
-       open(`/pages/singleProduct.html?id=${e.target.dataset.id}`, "_self")
+    const element = e.target
+    const id = element.closest(".products__card").dataset.id
+    if(element.tagName === "IMG"){
+       open(`/pages/singleProduct.html?id=${id}`, "_self")
+    }else if(element.closest("button")?.name === 'like-btn'){
+        const favouriteIcon = element.closest("button").querySelector(".favouriteIcon")
+        favouriteIcon.classList.toggle("filled")
+        const wish = mainData.find(item => item.id === +id)
+        if(favouriteIcon.classList.contains("filled")){
+            postWish(wish, id)
+        }else{
+            removeWish(id)
+        }
+    }
+})
+
+function postWish(wish, id){
+    const index = wishList.findIndex(item => item.id === +id)
+    if(index === -1){
+        wishList.push(wish)
+        localStorage.setItem("wishList", JSON.stringify(wishList))
+        document.querySelector(".countWishItems").textContent = wishList.length
+    }
+}
+
+function removeWish(id){
+    const index = wishList.findIndex(item => item.id === +id)
+    wishList = [...wishList.slice(0, index), ...wishList.slice(index + 1)]
+    localStorage.setItem("wishList", JSON.stringify(wishList))
+    document.querySelector(".countWishItems").textContent = wishList.length
+}
+
+searchDropBoxEl.addEventListener("click", (e)=> {
+    if(e.target.closest(".search__item")?.className === "search__item"){
+        const id = e.target.closest(".search__item").dataset.id
+        open(`/pages/singleProduct.html?id=${e.target.closest(".search__item").dataset.id}`, "_self")
+        searchInputEl.value = ""
     }
 })

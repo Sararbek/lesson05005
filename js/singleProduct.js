@@ -1,5 +1,7 @@
 const detailsPage = document.querySelector('.details__wrapper')
 const BASE_URL = 'https://dummyjson.com'
+const wishList = JSON.parse(localStorage.getItem("wishList")) || []
+document.querySelector(".countWishItems").textContent = `${wishList.length}`
 
 async function fetchSingleProduct() {
     try{
@@ -18,7 +20,6 @@ async function fetchSingleProduct() {
 }
 
 function creatDetails(data){
-    console.log(1)
     detailsPage.innerHTML = `
         <div class="details__images">
                         <div class="details__mainImage">

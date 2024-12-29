@@ -2,6 +2,8 @@ const postsWrapperEl = document.querySelector('.posts')
 const loadingPostWrapper = document.querySelector('.loading__posts')
 const seeMoreBtn = document.querySelector('.seeMoreBtn')
 const BASE_URL = 'https://dummyjson.com'
+const wishList = JSON.parse(localStorage.getItem("wishList")) || []
+document.querySelector(".countWishItems").textContent = `${wishList.length}`
 
 const perPgeCount = 2
 let total = 0

@@ -1,7 +1,8 @@
 const usersWrapperEl = document.querySelector('.users')
 const loadingEl = document.querySelector('.loading')
 const scrollBtns = document.querySelector('.users__scrollBtns')
-
+const wishList = JSON.parse(localStorage.getItem("wishList")) || []
+document.querySelector(".countWishItems").textContent = `${wishList.length}`
 
 const BASE_URL = 'https://dummyjson.com'
 
